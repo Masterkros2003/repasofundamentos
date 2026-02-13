@@ -34,24 +34,24 @@ $array[$palabra] = 1;
 
 }
 
-// $usuarios = [["nombre" => "Ana", "pais"=>"España"],
-//             ["nombre" => "Luis", "pais"=>"Mexico"],
-//             ["nombre" => "Juan", "pais"=>"España"],];
+$usuarios = [["nombre" => "Ana", "pais"=>"España"],
+            ["nombre" => "Luis", "pais"=>"Mexico"],
+            ["nombre" => "Juan", "pais"=>"España"],];
 
-// $salida = [];
-
-
+$salida = [];
 
 
 
-// for ($i=0; $i < count($usuarios); $i++) { 
-//     foreach ($usuarios[$i] as $key => $value) {
-//        if ($key == "pais") {
-//     $pais = $value;
-//        }
-//     }
 
-// }
+
+for ($i=0; $i < count($usuarios); $i++) { 
+    foreach ($usuarios[$i] as $key => $value) {
+       if ($key == "pais") {
+    $pais = $value;
+       }
+    }
+
+}
 
 $carrito= [["id" =>1, "nombre" => "Laptop", "precio" =>1200, "cantidad" =>1, "categoria" => "tech"],
 ["id" =>2, "nombre" => "Laptop", "precio" =>1200, "cantidad" =>1, "categoria" => "tech"],

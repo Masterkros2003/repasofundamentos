@@ -1,8 +1,9 @@
 
+
 // Ejercicio 2: El Filtro (Modificar valores)
 // Objetivo: Tienes una matriz con notas de alumnos. 
 // Si la nota es menor que 5, debes cambiarla por un 0 (suspenso). 
-Si es 5 o más, déjala como está. Al final, imprime la matriz modificada.
+// Si es 5 o más, déjala como está. Al final, imprime la matriz modificada. -->
 
 $notas = [
     [4, 8, 3],
@@ -21,3 +22,4 @@ for ($i = 0; $i < count($notas); $i++) {
 }
 echo $notas[$i][$j] ."";
 
+ ?>
