@@ -1,13 +1,20 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+  // ======================================================
+  // 1. VARIABLES GLOBALES Y CONFIGURACIÓN
+  // ======================================================
   let tamayo = Number(prompt('Dime el tamaño del tablero'));
+  let turno = 1;
 
+  // Declaración de matrices usando la función auxiliar (por hoisting funciona bien)
   let tableroSolucionJ1 = crearMatriz(tamayo);
   let tableroSolucionJ2 = crearMatriz(tamayo);
-
   let tableroJ1 = crearMatriz(tamayo);
   let tableroJ2 = crearMatriz(tamayo);
 
+  // ======================================================
+  // 2. FUNCIONES AUXILIARES (DATOS)
+  // ======================================================
   function crearMatriz(tam) {
     let m = [];
     for (let i = 0; i < tam; i++) {
@@ -19,124 +26,107 @@ document.addEventListener('DOMContentLoaded', () => {
     return m;
   }
 
+  // ======================================================
+  // 3. FUNCIONES DE LÓGICA Y DOM
+  // ======================================================
+
+  // Lógica principal: Crea el tablero interactivo y gestiona los clicks (disparos)
   const crearTablaJugada = (jugador, tableroJ1, tableroJ2) => {
+    let table = document.createElement('table');
+    let tablero = null;
 
-  let table = document.createElement('table');
-  let tablero = null;
+    if (jugador == 1) tablero = tableroJ1;
+    else tablero = tableroJ2;
 
-  if (jugador == 1) tablero = tableroJ1;
-  else tablero = tableroJ2;
+    for (let i = 0; i < tablero.length; i++) {
+      let fila = document.createElement('tr');
 
-  for (let i = 0; i < tablero.length; i++) {
-    let fila = document.createElement('tr');
+      for (let j = 0; j < tablero[i].length; j++) {
+        let columna = document.createElement('td');
+        columna.id = `${i},${j}`;
+        columna.style.width = "32px";
+        columna.style.height = "32px";
 
-    for (let j = 0; j < tablero[i].length; j++) {
-      let columna = document.createElement('td');
-      columna.id = ${i},${j};
-      columna.style.width = "32px";
-      columna.style.height = "32px";
-
-      if (tablero[i][j] == 1) {
-        columna.style.backgroundColor = "red";
-      } else if (tablero[i][j] == 2) {
-        columna.style.backgroundColor = "blue";
-      }
-      columna.style.border = "2px solid black";
-
-      columna.addEventListener('click', (e) => {
-
-        // ✅ SOLO PUEDE JUGAR EL QUE TIENE EL TURNO
-        if (jugador != turno) return;
-
-        let acertado = true;
-
-        const [c1, c2] = e.target.id.split(',');
-        const coordenada1 = Number(c1);
-        const coordenada2 = Number(c2);
-
-        if (jugador == 1) {
-          if (tableroSolucionJ2[coordenada1][coordenada2] != 1) {
-            acertado = false;
-            tableroJ1[coordenada1][coordenada2] = 2;
-          } else {
-            tableroJ1[coordenada1][coordenada2] = 1;
-          }
-        } else {
-          if (tableroSolucionJ1[coordenada1][coordenada2] != 1) {
-            acertado = false;
-            tableroJ2[coordenada1][coordenada2] = 2;
-          } else {
-            tableroJ2[coordenada1][coordenada2] = 1;
-          }
+        if (tablero[i][j] == 1) {
+          columna.style.backgroundColor = "red";
+        } else if (tablero[i][j] == 2) {
+          columna.style.backgroundColor = "blue";
         }
+        columna.style.border = "2px solid black";
 
-        let divtableroJ1 = document.querySelector('#tableroJ1');
-        let divtableroJ2 = document.querySelector('#tableroJ2');
+        columna.addEventListener('click', (e) => {
 
-        if (jugador == 1) {
-          const tablaJ1 = crearTablaJugada(1, tableroJ1, tableroJ2);
-          divtableroJ1.innerHTML = "";
-          divtableroJ1.appendChild(tablaJ1);
-        } else {
-          const tablaJ2 = crearTablaJugada(2, tableroJ1, tableroJ2);
-          divtableroJ2.innerHTML = "";
-          divtableroJ2.appendChild(tablaJ2);
-        }
+          if (jugador != turno) return;
 
-        if (!acertado) {
+          let acertado = true;
+
+          const [c1, c2] = e.target.id.split(',');
+          const coordenada1 = Number(c1);
+          const coordenada2 = Number(c2);
 
           if (jugador == 1) {
-            turno = 2;
-            alert("Le toca al jugador 2");
-
-            divtableroJ1.style.display = "none";
-            divtableroJ2.style.display = "block";
-
-            const tablaJ2 = crearTablaJugada(2, tableroJ1, tableroJ2);
-            divtableroJ2.innerHTML = "";
-            divtableroJ2.appendChild(tablaJ2);
-
+            if (tableroSolucionJ2[coordenada1][coordenada2] != 1) {
+              acertado = false;
+              tableroJ1[coordenada1][coordenada2] = 2;
+            } else {
+              tableroJ1[coordenada1][coordenada2] = 1;
+            }
           } else {
-            turno = 1;
-            alert("Le toca al jugador 1");
+            if (tableroSolucionJ1[coordenada1][coordenada2] != 1) {
+              acertado = false;
+              tableroJ2[coordenada1][coordenada2] = 2;
+            } else {
+              tableroJ2[coordenada1][coordenada2] = 1;
+            }
+          }
 
-            divtableroJ2.style.display = "none";
-            divtableroJ1.style.display = "block";
+          let divtableroJ1 = document.querySelector('#tableroJ1');
+          let divtableroJ2 = document.querySelector('#tableroJ2');
 
+          if (jugador == 1) {
             const tablaJ1 = crearTablaJugada(1, tableroJ1, tableroJ2);
             divtableroJ1.innerHTML = "";
             divtableroJ1.appendChild(tablaJ1);
+          } else {
+            const tablaJ2 = crearTablaJugada(2, tableroJ1, tableroJ2);
+            divtableroJ2.innerHTML = "";
+            divtableroJ2.appendChild(tablaJ2);
           }
-        }
 
-      });
+          if (!acertado) {
+            if (jugador == 1) {
+              turno = 2;
+              alert("Le toca al jugador 2");
 
-      fila.appendChild(columna);
+              divtableroJ1.style.display = "none";
+              divtableroJ2.style.display = "block";
+
+              const tablaJ2 = crearTablaJugada(2, tableroJ1, tableroJ2);
+              divtableroJ2.innerHTML = "";
+              divtableroJ2.appendChild(tablaJ2);
+
+            } else {
+              turno = 1;
+              alert("Le toca al jugador 1");
+
+              divtableroJ2.style.display = "none";
+              divtableroJ1.style.display = "block";
+
+              const tablaJ1 = crearTablaJugada(1, tableroJ1, tableroJ2);
+              divtableroJ1.innerHTML = "";
+              divtableroJ1.appendChild(tablaJ1);
+            }
+          }
+        });
+
+        fila.appendChild(columna);
+      }
+      table.appendChild(fila);
     }
-    table.appendChild(fila);
-  }
+    return table;
+  };
 
-  return table;
-};
-
-
-
-    let turno = 1;
-    document.querySelector('#tableroJ2').style.display = "none";
-
-
-  if (turno == 1) {
-    const tablaJ1 = crearTablaJugada(1, tableroJ1, tableroJ2);
-    let divtableroJ1 = document.querySelector('#tableroJ1');
-    divtableroJ1.innerHTML = "";
-    divtableroJ1.appendChild(tablaJ1);
-  } else {
-    const tablaJ2 = crearTablaJugada(2, tableroJ1, tableroJ2);
-    let divtableroJ2 = document.querySelector('#tableroJ2');
-    divtableroJ2.innerHTML = "";
-    divtableroJ2.appendChild(tablaJ2);
-  }
-
+  // Crea la visualización de los tableros solución (sin eventos)
   const crearTablaSolucion = (jugador, tablero) => {
     let table = document.createElement('table');
 
@@ -145,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       for (let j = 0; j < tablero[i].length; j++) {
         let columna = document.createElement('td');
-        columna.id = ${i},${j};
+        columna.id = `${i},${j}`;
         columna.style.width = "32px";
         columna.style.height = "32px";
 
@@ -160,18 +150,15 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       table.appendChild(fila);
     }
-
     return table;
-
-    
   };
 
-
+  // Lógica para rellenar las matrices con los barcos
   const crearTablero = (jugador) => {
     let tableroSolucion = (jugador === 1) ? tableroSolucionJ1 : tableroSolucionJ2;
 
-    let barco3Posicion = prompt(JUGADOR ${jugador}: Posición Barco 3);
-    let barco3Direccion = prompt(JUGADOR ${jugador}: Dirección izquierda/derecha/arriba/abajo);
+    let barco3Posicion = prompt(`JUGADOR ${jugador}: Posición Barco 3`);
+    let barco3Direccion = prompt(`JUGADOR ${jugador}: Dirección izquierda/derecha/arriba/abajo`);
 
     let [c1, c2] = barco3Posicion.split(',');
     let coordenada1 = Number(c1);
@@ -199,13 +186,33 @@ document.addEventListener('DOMContentLoaded', () => {
       default:
         break;
     }
-
-    
     console.table(tableroSolucion);
   };
+
+  // ======================================================
+  // 4. EJECUCIÓN E INICIALIZACIÓN
+  // ======================================================
+
+  // Fase 1: Configuración de barcos
   crearTablero(1);
   crearTablero(2);
 
+  // Fase 2: Renderizado inicial del juego
+  document.querySelector('#tableroJ2').style.display = "none";
+
+  if (turno == 1) {
+    const tablaJ1 = crearTablaJugada(1, tableroJ1, tableroJ2);
+    let divtableroJ1 = document.querySelector('#tableroJ1');
+    divtableroJ1.innerHTML = "";
+    divtableroJ1.appendChild(tablaJ1);
+  } else {
+    const tablaJ2 = crearTablaJugada(2, tableroJ1, tableroJ2);
+    let divtableroJ2 = document.querySelector('#tableroJ2');
+    divtableroJ2.innerHTML = "";
+    divtableroJ2.appendChild(tablaJ2);
+  }
+
+  // Fase 3: Renderizado de las soluciones (visible en HTML)
   const tablaSolucionJ1 = crearTablaSolucion(1, tableroSolucionJ1, "solucion");
   let divTableroSolucionJ1 = document.querySelector('#tableroSolucionJ1');
   if (divTableroSolucionJ1) {
@@ -219,4 +226,5 @@ document.addEventListener('DOMContentLoaded', () => {
     divTableroSolucionJ2.innerHTML = "";
     divTableroSolucionJ2.appendChild(tablaSolucionJ2);
   }
+
 });
