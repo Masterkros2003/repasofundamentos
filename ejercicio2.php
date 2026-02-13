@@ -61,12 +61,12 @@ $total = 0;
 
 for ($i=0; $i < count($carrito); $i++) { 
 
-if ($carrito[$i]["categoria"] == $categoria) {
-    $total = $carrito[$i]["precio"];
+if ($carrito[$i]["categoria"] == "tech") {
+    $total *= $carrito[$i]["precio"] * $carrito[$i]["cantidad"];
    
-}return $total * 0.20;
-    
 }
+    
+}echo $total * 0.20;
 
 
 
